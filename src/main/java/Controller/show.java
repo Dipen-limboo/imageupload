@@ -1,12 +1,16 @@
 package Controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -36,7 +40,23 @@ public class show extends HttpServlet {
 				usr.setId(rs.getInt(1));
 				usr.setFname(rs.getString("first_name"));
 				usr.setLname(rs.getString("last_name"));
-				usr.setImage(rs.getString("photo"));
+				
+				Blob blob = rs.getBlob("photo");
+				InputStream ins = blob.getBinaryStream();
+				ByteArrayOutputStream os = new ByteArrayOutputStream();
+				byte[] byt = new byte[4096];
+				int byteread = -1;
+				
+				while((byteread = ins.read(byt)) != -1) {
+					os.write(byt,  0, byteread);
+				}
+				
+				byte [] imageByte = os.toByteArray();
+				String images = Base64.getEncoder().encodeToString(imageByte);
+				
+				
+				
+				usr.setImage(images);
 				list.add(usr);
 			}
 			request.setAttribute("UserList", list);

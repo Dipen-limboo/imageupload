@@ -15,7 +15,7 @@
 			<th>Id</th>
 			<th>First Name</th>
 			<th>Last Name </th>
-			<th> Images </th>
+			<th>Images</th>
 		</tr>
 		<% if (list != null){
 			for (User usr: list){
@@ -27,7 +27,7 @@
 			<td><%= usr.getId() %></td>
 			<td><%= usr.getFname() %></td>
 			<td><%= usr.getLname() %></td>
-			<td><%= usr.getImage() %></td>
+			<td><img src ="data:image/jpg;base64,<%= usr.getImage() %>"></td>
 		</tr>
 		<% 		}
 			}
